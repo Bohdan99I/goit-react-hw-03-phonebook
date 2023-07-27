@@ -16,6 +16,23 @@ export class App extends React.Component {
     filter: '',
   };
 
+  componentDidMount() {
+    // Під час завантаження застосунку зчитуємо контакти з localStorage (якщо вони є)
+    const storedContacts = localStorage.getItem('contacts');
+    if (storedContacts) {
+      this.setState({
+        contacts: JSON.parse(storedContacts),
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // Під час оновлення стану зберігаємо контакти у localStorage
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   addContact = (name, number) => {
     const contact = {
       id: nanoid(),
